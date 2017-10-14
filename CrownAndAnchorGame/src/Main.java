@@ -70,9 +70,7 @@ public class Main {
                 } //for
             
                 if( !player.balanceExceedsLimitBy(bet) ) 
-                {
                     break;
-                }
                                     
                 System.out.println(String.format("Win count = %d, Lose Count = %d, %.2f", winCount, loseCount, (float) winCount/(winCount+loseCount)));
                 totalWins += winCount;
