@@ -4,9 +4,13 @@ import java.io.*;
 public class Main {
 	
 	public static void main(String[] args) throws Exception {
-		
-	   BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-
+	
+            System.out.println( "Please input player's age" );
+            
+            BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+            String age = console.readLine();
+            if( Integer.valueOf(age) < 18 ) System.exit(0);
+                
             Dice d1 = new Dice();
             Dice d2 = new Dice();
             Dice d3 = new Dice();
@@ -36,7 +40,7 @@ public class Main {
                     System.out.println(String.format("%s starts with balance %d, limit %d", 
                                     player.getName(), player.getBalance(), player.getLimit()));
 
-                    int turn = 0;
+                    int turn = 0, old_status = 0;
                     while (player.balanceExceedsLimitBy(bet) && player.getBalance() < 200)
                     {
                         turn++;                    
@@ -50,17 +54,20 @@ public class Main {
 
                         System.out.printf("Rolled %s, %s, %s\n",
                                     cdv.get(0), cdv.get(1), cdv.get(2));
-
-                        if (winnings > 0) {
-                                System.out.printf("%s won %d, balance now %d\n\n",
-                                            player.getName(), winnings, player.getBalance());
-                                    winCount++; 
+                        
+                        if ( winnings > 0) {
+                            System.out.printf("%s won %d, balance now %d\n\n", player.getName(), winnings, player.getBalance());
+                            winCount++; 
                         }
                         else {
-                                System.out.printf("%s lost, balance now %d\n\n",
-                                            player.getName(), player.getBalance());
-                                    loseCount++;
+                            System.out.printf("%s lost, balance now %d\n\n", player.getName(), player.getBalance());
+                            loseCount++;
                         }
+                        
+                        old_status = winnings;
+                        
+                        if( player.getBalance() == 0 )
+                            break;
 
                     } //while
                     
@@ -69,7 +76,7 @@ public class Main {
 
                 } //for
             
-                if( !player.balanceExceedsLimitBy(bet) ) 
+                if( !player.balanceExceedsLimit() ) 
                     break;
                                     
                 System.out.println(String.format("Win count = %d, Lose Count = %d, %.2f", winCount, loseCount, (float) winCount/(winCount+loseCount)));
